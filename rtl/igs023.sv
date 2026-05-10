@@ -119,12 +119,12 @@ reg [8:0] vcnt;
 reg [9:0] hcnt;
 
 // 0 is the top/right of the screen
-wire [10:0] logical_vcnt = { 2'b0, vcnt } - 38;
+wire [10:0] logical_vcnt = { 2'b0, vcnt } - 40;
 
 wire hsync = (hcnt >= 63 && hcnt < (63 + 63));
 wire hblank = hcnt < 192;
 wire vsync = (vcnt >= 14 && vcnt < (14 + 8));
-wire vblank = vcnt < 38;
+wire vblank = vcnt < 40;
 
 reg prev_fg_fpga_vram_master;
 always @(posedge clk) begin
@@ -137,12 +137,12 @@ always @(posedge clk) begin
         if (hcnt == 639) begin
             hcnt <= 0;
             vcnt <= vcnt + 1;
-            if (vcnt == 261) begin
+            if (vcnt == 263) begin
                 vcnt <= 0;
             end
         end
 
-        if (hcnt == 638 && vcnt > 36 && vcnt < 261) begin
+        if (hcnt == 638 && vcnt > 38 && vcnt < 263) begin
             fg_read_y <= logical_vcnt[7:0] + fg_y[7:0] + 8'd1;
             fg_start_read <= 1;
             bg_read_y <= logical_vcnt[10:0] + bg_y[10:0] + 11'd1;
